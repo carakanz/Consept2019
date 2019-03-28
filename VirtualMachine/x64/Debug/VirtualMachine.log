@@ -1,0 +1,5 @@
+﻿  Run.cpp
+c:\users\carak\source\repos\consept2\virtualmachine\run.cpp(21): warning C4101: exeption: неиспользованная локальная переменная
+  main.cpp
+  Создание кода...
+  VirtualMachine.vcxproj -> C:\Users\carak\source\repos\Consept2\x64\Debug\VirtualMachine.exe

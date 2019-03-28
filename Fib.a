@@ -1,0 +1,108 @@
+#reg_info
+$inter &interrupt_start
+$rip &main
+$rsi &steck_start
+$rbi &steck_start
+#mem_size 100000000
+
+#mem 0
+jmp &main
+
+.hello_text
+#string "Hellow word. Write nubmer of fibonacci number"
+
+.too_large_number_text
+#string "Too large number. Repeat."
+
+.answer_text
+#string "Fibonacci number = "
+
+.fibonacci_numbers
+#uint64 1
+#uint64 1
+#uint64[] 50
+
+.interrupt_start
+stop
+stop
+stop
+stop
+stop
+stop
+stop
+stop
+stop
+stop
+
+#################################################
+
+.fibonacci
+movq $rbx, $rcx
+cmpq (&fibonacci_numbers + 8 * $rbx), 0
+jne &fibonacci_return
+
+subq $rbx, 1
+cmpq (&fibonacci_numbers + 8 * $rbx), 0
+jne &fibonacci_add
+
+pushq $rbx
+pushq $rcx
+call &fibonacci
+popq $rbx
+popq $rcx
+
+.fibonacci_add
+movq (&fibonacci_numbers + 8 * $rbx), $rax
+subq $rbx, 1
+addq (&fibonacci_numbers + 8 * $rbx), $rax
+movq $rax, (&fibonacci_numbers + 8 * $rcx)
+ret
+
+.fibonacci_return
+mov (&fibonacci_numbers + 8 * $rcx), $rax
+ret
+
+##################################################
+
+.write_string
+movq $rcx, 0
+movq ($rbx + 1 * $rcx), $rdx
+.write_next
+outb $rdx
+addq $rcx, 1
+movq ($rbx + 1 * $rcx), rdx
+cmpq $rdx, 0
+jne &write_next
+ret
+
+###################################################
+
+.main
+movq &hello_text, $rbx
+call &write_string
+outb 10;
+
+.read_number
+inq $rbx
+cmpq $rbx, 52
+jna &read_number_ok
+
+movq &too_large_number_text, $rbx
+call &write_string
+outb 10;
+jmp &read_number
+
+.readed_number_ok
+call fibonacci
+
+movq &answer_text, $rbx
+pushq $rax
+call &write_string
+popq $rax
+outq $rax
+outb 10;
+stop
+
+####################################################
+#mem 50000000
+.steck_start

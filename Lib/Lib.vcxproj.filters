@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Command">
+      <UniqueIdentifier>{7bcdaf59-89e5-4577-9193-ec9b22ff3876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Command">
+      <UniqueIdentifier>{7bad8f71-2956-48e5-8de7-6290a4dac4ac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Command\ICommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\JumpCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandList.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\СompareAndJumpCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\MovCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\AddCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\SubCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\MulCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\DivCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\PushCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\PopCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\RetCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\InCommnad.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\OutCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CallCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CmpCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Command\StopCommand.h">
+      <Filter>Файлы заголовков\Command</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
