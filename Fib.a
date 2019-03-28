@@ -59,7 +59,7 @@ movq $rax, (&fibonacci_numbers + 8 * $rcx)
 ret
 
 .fibonacci_return
-mov (&fibonacci_numbers + 8 * $rcx), $rax
+movq (&fibonacci_numbers + 8 * $rcx), $rax
 ret
 
 ##################################################
