@@ -10,40 +10,57 @@ class class_name {                                                              
 public:                                                                            \
     class_name();                                                                  \
 private:                                                                           \
-    using __this_class_type = class_name;					                       \
+    using this_class_type = class_name;					                           
 
 #define END(class_name)                                                            \
 public:                                                                            \
     std::unordered_map<std::string, std::function<void(void*)>> virtual_table;     \
-    static_assert(std::is_same<class_name, __this_class_type>::value,			   \
+    std::unordered_map<std::string, bool> class_name##_##methods;                  \
+    bool getMethod(std::string method_name) {                                      \
+        auto method = class_name##_##methods.find(method_name);                    \
+        return method != class_name##_##methods.end() && method->second;           \
+    }                                                                              \
+    static_assert(std::is_same<class_name, this_class_type>::value,			       \
                   "Bad END of class");                                             \
 };                                                                                 \
                                                                    
 #define DECLARE_METHOD(class_name, method_name, function)                          \
 virtual_table[#method_name] = function;                                            \
+class_name##_##methods[#method_name] = true;
+
+#define VIRTUAL_CLASS_DERIVED(class_name, base_class_name)                         \
+class class_name : public base_class_name {                                        \
+public:                                                                            \
+    class_name();											        			   \
+    using this_class_type = class_name;					                           \
+    using base_class_type = base_class_name;
+
+#define END_DERIVE(class_name, base_class_name)                                    \
+    std::unordered_map<std::string, bool> class_name##_##methods;                  \
+    bool getMethod(std::string method_name) {                                      \
+        auto method = class_name##_##methods.find(method_name);                    \
+		if (method != class_name##_##methods.end()) {                              \
+			return method->second;                                                 \
+		} else {                                                                   \
+			bool has_method = base_class_name::getMethod(method_name);             \
+            class_name##_##methods[method_name] = has_method;                      \
+            return has_method;                                                     \
+		}                                                                          \
+    }                                                                              \
+    static_assert(std::is_same<this_class_type, class_name>::value,	               \
+                  "Bad END of class");											   \
+    static_assert(std::is_same<base_class_type, base_class_name>::value,		   \
+                  "Bad END of class");\
+};
 
 #define CONSTRUCTOR_BEGIN(class_name)                                              \
-class_name::class_name()                                                           \
-{                                                                                  \
+class_name::class_name() {
 
 #define CONSTRUCTOR_END                                                            \
 };
 
-#define VIRTUAL_CLASS_DERIVED(derived_class_name, base_class_name)                 \
-class derived_class_name : public base_class_name {                                \
-public:                                                                            \
-    derived_class_name();														   \
-    using __this_class_type = derived_class_name;					               \
-    using __base_class_type = base_class_name;					                   \
-
-#define END_DERIVE(derived_class_name, base_class_name)                            \
-    static_assert(std::is_same<__this_class_type, derived_class_name>::value,	   \
-                  "Bad END of class");											   \
-    static_assert(std::is_same<__base_class_type, base_class_name>::value,		   \
-                  "Bad END of class");\
-};
-
 #define VIRTUAL_CALL(class_name, method_name)									   \
+assert(class_name->getMethod(#method_name));                                       \
 class_name->virtual_table[#method_name](class_name);
 
 VIRTUAL_CLASS(Base)
@@ -84,7 +101,7 @@ int main() {
 
     VIRTUAL_CALL(reallyDerived, Both);
     VIRTUAL_CALL(reallyDerived, OnlyBase);
-    VIRTUAL_CALL(reallyDerived, OnlyDerived);
+    // VIRTUAL_CALL(reallyDerived, OnlyDerived); // triggered assert
 
     return 0;
 }
