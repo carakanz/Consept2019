@@ -14,7 +14,7 @@ private:                                                                        
 
 #define END(class_name)                                                            \
 public:                                                                            \
-    std::unordered_map<std::string, std::function<void(void)>> virtual_table;           \
+    std::unordered_map<std::string, std::function<void(void*)>> virtual_table;     \
     static_assert(std::is_same<class_name, __this_class_type>::value,			   \
                   "Bad END of class");                                             \
 };                                                                                 \
@@ -44,24 +44,28 @@ public:                                                                         
 };
 
 #define VIRTUAL_CALL(class_name, method_name)									   \
-class_name->virtual_table[#method_name]();
+class_name->virtual_table[#method_name](class_name);
 
 VIRTUAL_CLASS(Base)
 int a = 0;
 END(Base)
 
 CONSTRUCTOR_BEGIN(Base)
-DECLARE_METHOD(Base, Both, []() { std::cout << "Base::Both" << std::endl; })
-DECLARE_METHOD(Base, OnlyBase, []() { std::cout << "Base::OnlyBase" << std::endl; })
+DECLARE_METHOD(Base, Both, [](void*) { std::cout << "Base::Both" << std::endl; })
+DECLARE_METHOD(Base, OnlyBase, [](void*) { std::cout << "Base::OnlyBase" << std::endl; })
 CONSTRUCTOR_END
 
 VIRTUAL_CLASS_DERIVED(Derived, Base)
 int a = 1;
+int b = 2;
 END_DERIVE(Derived, Base)
 
 CONSTRUCTOR_BEGIN(Derived)
-DECLARE_METHOD(Derived, Both, []() { std::cout << "Derived::Both" << std::endl; })
-DECLARE_METHOD(Derived, OnlyDerived, []() { std::cout << "Derived::OnlyDerived" << std::endl; })
+DECLARE_METHOD(Derived, Both, [](void* self) {
+    auto deliver = reinterpret_cast<Derived*>(self);
+    std::cout << "Derived::Both, b = " << deliver->b << std::endl;
+})
+DECLARE_METHOD(Derived, OnlyDerived, [](void*) { std::cout << "Derived::OnlyDerived" << std::endl; })
 CONSTRUCTOR_END
 
 int main() {
